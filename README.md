@@ -2,11 +2,11 @@
 
 A desktop utility for creating VMR files from multiple different model libraries.
 
-![Downloads](https://img.shields.io/github/downloads/CodingLampa/MyVMR/total)
-![Latest release](https://img.shields.io/github/v/release/CodingLampa/MyVMR)
-![License](https://img.shields.io/github/license/CodingLampa/MyVMR)
-![Issues](https://img.shields.io/github/issues/CodingLampa/MyVMR)
-![Stars](https://img.shields.io/github/stars/CodingLampa/MyVMR)
+![Downloads](https://img.shields.io/github/downloads/CodingLampa/myVMR/total)
+![Latest release](https://img.shields.io/github/v/release/CodingLampa/myVMR)
+![License](https://img.shields.io/github/license/CodingLampa/myVMR)
+![Issues](https://img.shields.io/github/issues/CodingLampa/myVMR)
+![Stars](https://img.shields.io/github/stars/CodingLampa/myVMR)
 
 <img width="1536" height="1024" alt="logo" src="https://github.com/user-attachments/assets/6ace1c82-e608-4708-a3dd-33bb425f72d5" />
 
@@ -24,7 +24,7 @@ A desktop utility for creating VMR files from multiple different model libraries
 
 ## 📦 Installation
 
-1. Go to the **[Releases](https://github.com/CodingLampa/MyVMR/releases)** section.  
+1. Go to the **[Releases](https://github.com/CodingLampa/myVMR/releases)** section.  
 2. Download the latest version.  
 3. Run the installer.  
 

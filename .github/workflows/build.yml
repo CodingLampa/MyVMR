@@ -39,7 +39,7 @@ jobs:
         shell: bash
         run: |
           VERSION="${{ inputs.version }}"
-          NOTES=$(awk "/^## \[$VERSION\]/{found=1; next} /^## \[/{if(found) exit} found{print}" CHANGELOG.md)
+          NOTES=$(awk "/^## Changelog $VERSION/{found=1; next} /^## /{if(found) exit} found{print}" CHANGELOG.md)
           echo "NOTES<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -61,7 +61,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ inputs.version }}
-          name: MyVMR v${{ inputs.version }}
+          name: myVMR v${{ inputs.version }}
           body: ${{ steps.changelog.outputs.NOTES }}
           files: release/*.exe
           make_latest: true
