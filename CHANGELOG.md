@@ -1,4 +1,4 @@
-## Changelog v1.0.0
+## Changelog 1.0.0
 
 ### Features:
 - Auto-detect paths for FS20 and FS24
