@@ -194,3 +194,20 @@
 .logLine        { color: var(--text); display: block; }
 .logLineError   { color: var(--danger); display: block; font-weight: 500; }
 .logLineSuccess { color: var(--success); display: block; font-weight: 500; }
+
+/* ── Credits footer ── */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+
+.footerDivider {
+  color: var(--border);
+}

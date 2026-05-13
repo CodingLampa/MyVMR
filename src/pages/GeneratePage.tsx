@@ -359,6 +359,13 @@ export const GeneratePage = () => {
           </div>
         </div>
       )}
+
+      {/* Credits footer */}
+      <div className={styles.footer}>
+        <span>Created by <strong>CodingLampa</strong> (Laurie Cooper)</span>
+        <span className={styles.footerDivider}>·</span>
+        <span>UI styles adapted from <strong>BAVirtual Livery Manager</strong> by Pavel Sergienko</span>
+      </div>
     </div>
   );
 };
