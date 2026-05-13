@@ -11,7 +11,9 @@
     "build": "bun run build:renderer && bun run build:main",
     "build:renderer": "vite build",
     "build:main": "tsc -p tsconfig.electron.json",
-    "build:exe": "bun run build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never"
+    "build:exe": "bun run build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never",
+    "build:local": "bun run build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never --config.win.target=dir",
+    "run:local": "start release\\win-unpacked\\MyVMR.exe"
   },
   "author": "Laurie Cooper",
   "license": "MIT",
