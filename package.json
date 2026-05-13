@@ -46,7 +46,8 @@
     "files": ["dist/**/*", "dist-electron/**/*", "package.json"],
     "win": {
       "target": "nsis",
-      "icon": "public/logo.ico"
+      "icon": "public/logo.ico",
+      "artifactName": "MyVMR-${version}-Setup.${ext}"
     }
   }
 }
