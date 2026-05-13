@@ -4,9 +4,7 @@ import logo from '../assets/logo.png';
 
 export const TitleBar = () => (
   <div className={styles.titlebar}>
-    <div className={styles.drag}>
-      <img src={logo} alt="myVMR" className={styles.titleLogo} />
-    </div>
+    <img src={logo} alt="myVMR" className={styles.titleLogo} />
     <div className={styles.controls}>
       <button onClick={() => window.electronAPI.windowMinimize()} className={styles.btn} title="Minimise">
         <Minus size={13} />

@@ -4,24 +4,21 @@
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 0 0 16px;
+  justify-content: flex-end;
+  position: relative;
   flex-shrink: 0;
   -webkit-app-region: drag;
 }
 
-.drag {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-}
-
 .titleLogo {
-  height: 52px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 78px;
   width: auto;
   object-fit: contain;
   display: block;
+  pointer-events: none;
 }
 
 .controls {

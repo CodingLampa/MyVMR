@@ -9,9 +9,9 @@ let mainWindow: BrowserWindow | null = null;
 function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1100,
-    height: 780,
-    minWidth: 820,
-    minHeight: 620,
+    height: 820,
+    minWidth: 1000,
+    minHeight: 820,
     frame: false,
     backgroundColor: '#f8f9fa',
     webPreferences: {
