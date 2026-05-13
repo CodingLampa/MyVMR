@@ -1,0 +1,83 @@
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  padding-top: 20px;
+  transition: width 0.28s ease;
+}
+
+.sidebarCollapsed {
+  width: 52px;
+}
+
+/* ── Collapse toggle ── */
+.collapseBtn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s ease, color 0.12s ease;
+  margin-bottom: 4px;
+}
+.collapseBtn:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+
+/* ── Nav ── */
+.nav {
+  list-style: none;
+  padding: 0 6px;
+  flex: 1;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.12s ease, color 0.12s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.navItem:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+.navItem.active { background: rgba(74,158,255,0.1); color: var(--accent); }
+.navItem.active svg { stroke: var(--accent); }
+
+/* ── Logo at bottom ── */
+.brand {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease;
+}
+
+.brandCollapsed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.brandLogo {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}

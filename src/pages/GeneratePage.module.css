@@ -1,0 +1,196 @@
+.page {
+  padding: 20px 24px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+
+/* ── Form rows ── */
+.formRow {
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.formRow:last-child { margin-bottom: 0; }
+
+.formLabel {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.required { color: var(--required); }
+
+.hintTag {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.muted { color: var(--muted); }
+
+/* ── Checkbox-style toggle ── */
+.checkRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.checkBtn {
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+  font: inherit;
+  color: var(--text);
+}
+.checkBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+.checkLabel { color: var(--muted); font-size: 12.5px; }
+.checkLabelActive { color: var(--text); font-size: 12.5px; }
+
+.vmrMessage {
+  color: var(--muted);
+}
+
+/* ── Radio group ── */
+.prefHint {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.radioGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+}
+
+.radioLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* ── Custom rules note ── */
+.customRulesNote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── Generate + View Log row ── */
+.generateRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.generateBtn {
+  padding: 9px 22px;
+  font-size: 13px;
+}
+
+.viewLogBtn {
+  padding: 9px 16px;
+  font-size: 13px;
+}
+
+/* ── Log modal ── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 680px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.modalClose {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+.modalClose:hover { color: var(--text); background: rgba(0,0,0,0.06); }
+
+.log {
+  overflow-y: auto;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  flex: 1;
+  min-height: 200px;
+  max-height: 480px;
+}
+
+.logLine        { color: var(--text); display: block; }
+.logLineError   { color: var(--danger); display: block; font-weight: 500; }
+.logLineSuccess { color: var(--success); display: block; font-weight: 500; }

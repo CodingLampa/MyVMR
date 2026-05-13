@@ -1,0 +1,334 @@
+.page {
+  padding: 20px 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.headerActions {
+  display: flex;
+  gap: 8px;
+}
+
+.modelsStatus {
+  font-size: 11.5px;
+  color: var(--success);
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Filter bar ── */
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filterLabel {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.filterSep {
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.genericToggle {
+  padding: 2px 9px;
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: 500;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+  white-space: nowrap;
+}
+.genericToggle:hover { border-color: var(--accent); color: var(--accent); }
+.genericToggleActive {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(74, 158, 255, 0.1);
+}
+
+.filterCount {
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── Table ── */
+.tableWrap {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.th {
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+.th:last-child { cursor: default; }
+.th:hover:not(:last-child) { color: var(--text); }
+.thActive { color: var(--accent) !important; }
+
+.td {
+  padding: 7px 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.modelCell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  word-break: break-all;
+}
+
+.rowEven { background: var(--card); }
+.rowOdd  { background: var(--panel); }
+.rowEven:hover, .rowOdd:hover { background: rgba(74,158,255,0.04); cursor: pointer; }
+.rowSelected { background: rgba(74, 158, 255, 0.1) !important; }
+
+.checkbox {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.rowActions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
+}
+.iconBtn:hover { background: rgba(0,0,0,0.05); color: var(--text); }
+.iconBtnDanger:hover { background: rgba(220,53,69,0.08); color: var(--danger); border-color: var(--danger); }
+
+.emptyCell {
+  padding: 28px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.muted { color: var(--muted); }
+
+/* ── Pagination ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0 0;
+  flex-shrink: 0;
+}
+
+.pageInfo {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* ── Action bar ── */
+.actionBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0 0;
+  flex-shrink: 0;
+}
+
+.actionSep {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+/* ── Dialog ── */
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.dialog {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 600px;
+  max-width: 95vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.dialogHeader {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.dialogTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.dialogBody {
+  padding: 16px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.dialogRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dialogLabel {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.dialogHint {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.modelSearch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 10px;
+  margin-bottom: 6px;
+}
+
+.modelList {
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.modelListEmpty {
+  padding: 16px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.modelItem {
+  padding: 5px 10px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.modelItem:hover { background: rgba(74,158,255,0.08); }
+.modelItemSelected { background: rgba(74,158,255,0.16); color: var(--accent); }
+
+.dialogError {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.dialogFooter {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
