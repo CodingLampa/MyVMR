@@ -17,7 +17,7 @@ A desktop utility for creating VMR files from multiple different model libraries
 - Auto-detect FSLTL, AIG OIC, IVAO_MTL & JustFlight FSTraffic paths for FS20 and FS24
 - FSLTL's VMR merge function ensures generic aircraft types with no callsign are assigned a FSLTL model
 - Model Provider Preference feature enables users to select which library of models they would prefer to be shown where possible
-- Custom Rules page allows users to add, edit, or remove VMR rules from a VMR file
+- Custom Rules page is a VMR editor that allows users to add, edit, or remove VMR rules
 - VMR log shows what was added and what was ignored during the VMR creation
 
 ---
