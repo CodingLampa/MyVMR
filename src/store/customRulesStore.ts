@@ -7,10 +7,12 @@ export interface Rule {
 }
 
 interface CustomRulesState {
+  filePath: string | null;
   rules: Rule[];
   models: string[];
   modelsLoaded: boolean;
   modelsLoading: boolean;
+  setFilePath: (path: string | null) => void;
   setRules: (rules: Rule[]) => void;
   addRule: (rule: Rule) => void;
   updateRule: (index: number, rule: Rule) => void;
@@ -20,10 +22,12 @@ interface CustomRulesState {
 }
 
 export const useCustomRulesStore = create<CustomRulesState>((set) => ({
+  filePath: null,
   rules: [],
   models: [],
   modelsLoaded: false,
   modelsLoading: false,
+  setFilePath: (filePath) => set({ filePath }),
   setRules: (rules) => set({ rules }),
   addRule: (rule) => set((s) => ({ rules: [...s.rules, rule] })),
   updateRule: (index, rule) => set((s) => {

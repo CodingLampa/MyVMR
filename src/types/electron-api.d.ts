@@ -8,12 +8,14 @@ declare global {
       saveFile: () => Promise<string | null>;
       detectPaths: (version: 'fs2020' | 'fs2024') => Promise<DetectedPaths>;
       generate: (options: GenerateOptions) => Promise<GenerateResult>;
-      scanCommunity: () => Promise<string[]>;
+      scanCommunity: (version: 'fs2020' | 'fs2024') => Promise<string[]>;
       loadVmr: (filePath: string) => Promise<LoadedVmr>;
       onLog: (callback: (message: string) => void) => () => void;
       windowMinimize: () => void;
       windowMaximize: () => void;
       windowClose: () => void;
+      openExternal: (url: string) => Promise<void>;
+      saveVmr: (filePath: string, rules: { typecode: string; callsign: string; model: string }[]) => Promise<void>;
     };
   }
 }

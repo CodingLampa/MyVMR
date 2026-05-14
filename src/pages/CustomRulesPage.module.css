@@ -27,9 +27,42 @@
   gap: 8px;
 }
 
-.modelsStatus {
+.fileBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.fileName {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 420px;
+}
+
+.saveStatus {
   font-size: 11.5px;
-  color: var(--success);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.saveStatus_saving { color: var(--muted); }
+.saveStatus_saved  { color: var(--success); }
+.saveStatus_error  { color: var(--danger); }
+
+.modelsCount {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.noFile {
+  font-size: 12px;
+  color: var(--muted);
   margin-bottom: 8px;
   flex-shrink: 0;
 }

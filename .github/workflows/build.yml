@@ -35,14 +35,10 @@ jobs:
           "
 
       - name: Extract changelog for this version
-        id: changelog
         shell: bash
         run: |
           VERSION="${{ inputs.version }}"
-          NOTES=$(awk "/^## Changelog $VERSION/{found=1; next} /^## /{if(found) exit} found{print}" CHANGELOG.md)
-          echo "NOTES<<EOF" >> $GITHUB_OUTPUT
-          echo "$NOTES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          awk "/^## Changelog $VERSION/{found=1; next} /^## /{if(found) exit} found{print}" CHANGELOG.md > release-notes.txt
 
       - name: Build
         run: bun run build:exe
@@ -62,6 +58,6 @@ jobs:
         with:
           tag_name: v${{ inputs.version }}
           name: myVMR v${{ inputs.version }}
-          body: ${{ steps.changelog.outputs.NOTES }}
+          body_path: release-notes.txt
           files: release/*.exe
           make_latest: true

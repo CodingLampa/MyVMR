@@ -1,9 +1,9 @@
-import { ipcMain, dialog, BrowserWindow } from 'electron';
+import { ipcMain, dialog, shell, BrowserWindow } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 import { parseAircraftCfg, parseFsltlVmr, scanCommunityTitles } from '../services/cfgParser';
 import { generateVmr } from '../services/vmrGenerator';
-import { detectPaths } from '../services/pathDetector';
+import { detectPaths, getCommunityPath } from '../services/pathDetector';
 import type { GenerateOptions, GenerateResult, LoadedVmr } from '../../shared/types';
 
 type AirlineRules = Map<string, string[]>;   // key = "CS:TC"
@@ -273,7 +273,11 @@ export function registerHandlers(mainWindow: BrowserWindow): void {
 
   ipcMain.handle('vmr:detect-paths', (_e, version: 'fs2020' | 'fs2024') => detectPaths(version));
 
-  ipcMain.handle('vmr:scan-community', async () => scanCommunityTitles());
+  ipcMain.handle('vmr:scan-community', async (_e, version: 'fs2020' | 'fs2024') => {
+    const community = getCommunityPath(version);
+    if (!community) return [];
+    return scanCommunityTitles(community);
+  });
 
   ipcMain.handle('vmr:load-vmr', (_e, filePath: string): Promise<LoadedVmr> => parseFsltlVmr(filePath));
 
@@ -287,4 +291,33 @@ export function registerHandlers(mainWindow: BrowserWindow): void {
     else mainWindow.maximize();
   });
   ipcMain.handle('window:close', () => mainWindow.close());
+
+  ipcMain.handle('shell:open-external', (_e, url: string) => shell.openExternal(url));
+
+  ipcMain.handle('vmr:save-vmr', (_e, filePath: string, rules: { typecode: string; callsign: string; model: string }[]) => {
+    const grouped = new Map<string, string[]>();
+    for (const r of rules) {
+      const key = `${r.callsign.trim().toUpperCase()}:${r.typecode.trim().toUpperCase()}`;
+      const models = grouped.get(key) ?? [];
+      const m = r.model.trim();
+      if (m && !models.includes(m)) models.push(m);
+      grouped.set(key, models);
+    }
+    const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const lines = ['<?xml version="1.0" encoding="utf-8"?>', '<ModelMatchRuleSet>'];
+    const sorted = [...grouped.entries()].sort(([a], [b]) => a.localeCompare(b));
+    for (const [key, models] of sorted) {
+      if (!models.length) continue;
+      const colon = key.indexOf(':');
+      const cs = key.slice(0, colon);
+      const tc = key.slice(colon + 1);
+      if (cs) {
+        lines.push(`  <ModelMatchRule CallsignPrefix="${esc(cs)}" TypeCode="${esc(tc)}" ModelName="${esc(models.join('//'))}"/>`);
+      } else {
+        lines.push(`  <ModelMatchRule TypeCode="${esc(tc)}" ModelName="${esc(models.join('//'))}"/>`);
+      }
+    }
+    lines.push('</ModelMatchRuleSet>');
+    fs.writeFileSync(filePath, lines.join('\n'), 'utf-8');
+  });
 }

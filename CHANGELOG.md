@@ -7,6 +7,7 @@
 - Model provider preference feature enables users to select which library they would prefer when available
 - Custom Rules page for adding, editing, or removing entries within created VMR rules
 - VMR generation log shows what was added and what was ignored, a log file also prints with which models were left out and why so you can add through Custom Rules
+- The help page explains the app's functions and provides links to supported model libraries, as well as the app changelog
 
 ## Roadmap:
 - Improve UI/UX Experience

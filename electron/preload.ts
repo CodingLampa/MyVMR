@@ -17,8 +17,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   generate: (options: GenerateOptions): Promise<GenerateResult> =>
     ipcRenderer.invoke('vmr:generate', options),
 
-  scanCommunity: (): Promise<string[]> =>
-    ipcRenderer.invoke('vmr:scan-community'),
+  scanCommunity: (version: 'fs2020' | 'fs2024'): Promise<string[]> =>
+    ipcRenderer.invoke('vmr:scan-community', version),
 
   loadVmr: (filePath: string): Promise<LoadedVmr> =>
     ipcRenderer.invoke('vmr:load-vmr', filePath),
@@ -31,4 +31,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   windowMinimize: () => ipcRenderer.invoke('window:minimize'),
   windowMaximize: () => ipcRenderer.invoke('window:maximize'),
   windowClose: () => ipcRenderer.invoke('window:close'),
+  openExternal: (url: string) => ipcRenderer.invoke('shell:open-external', url),
+  saveVmr: (filePath: string, rules: { typecode: string; callsign: string; model: string }[]) =>
+    ipcRenderer.invoke('vmr:save-vmr', filePath, rules),
 });

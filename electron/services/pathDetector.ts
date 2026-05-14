@@ -44,6 +44,10 @@ function resolveCommunity(cfgCandidates: string[]): string | null {
   return null;
 }
 
+export function getCommunityPath(version: 'fs2020' | 'fs2024'): string | null {
+  return resolveCommunity(userCfgCandidates(version));
+}
+
 export function detectPaths(version: 'fs2020' | 'fs2024'): DetectedPaths {
   const community = resolveCommunity(userCfgCandidates(version));
   if (!community) return {};

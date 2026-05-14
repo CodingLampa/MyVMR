@@ -126,7 +126,7 @@ input, textarea, select {
 
 /* ── Section header ── */
 .section-header {
-  display: flex;
+  display: flex;                            
   align-items: center;
   gap: 8px;
   margin: 14px 0 6px;

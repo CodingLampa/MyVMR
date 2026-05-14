@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Plus, Edit2, Trash2, Upload, Search, X } from 'react-feather';
 import { useCustomRulesStore, type Rule } from '../store/customRulesStore';
 import styles from './CustomRulesPage.module.css';
@@ -99,7 +99,7 @@ const RuleDialog = ({ existing, allModels, usedModels, onSave, onClose }: RuleDi
             {filteredModels.length === 0 ? (
               <div className={styles.modelListEmpty}>
                 {availableModels.length === 0
-                  ? 'No models loaded — use "Load Models" on the right'
+                  ? 'No models loaded — use FS2020/FS2024 Models button to scan'
                   : 'No matches'}
               </div>
             ) : (
@@ -206,6 +206,7 @@ const BulkEditDialog = ({ count, onApply, onClose }: BulkEditDialogProps) => {
 // ── Main Page ────────────────────────────────────────────────────────────────
 
 type SortCol = 'typecode' | 'callsign' | 'model' | null;
+type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 
 const PAGE_SIZE = 200;
 
@@ -222,7 +223,22 @@ export const CustomRulesPage = () => {
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [bulkEditOpen, setBulkEditOpen] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
   const anchorPosRef = useRef<number | null>(null);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const autoSave = useCallback(async (rules: Rule[]) => {
+    if (!store.filePath) return;
+    setSaveStatus('saving');
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    try {
+      await window.electronAPI.saveVmr(store.filePath, rules);
+      setSaveStatus('saved');
+      saveTimerRef.current = setTimeout(() => setSaveStatus('idle'), 2000);
+    } catch {
+      setSaveStatus('error');
+    }
+  }, [store.filePath]);
 
   const visibleRules = useMemo(() => {
     const tcQ = filterTypecode.toLowerCase().trim();
@@ -308,12 +324,20 @@ export const CustomRulesPage = () => {
   const openEdit = (idx: number) => { setEditIndex(idx); setDialogOpen(true); };
 
   const handleSave = (rule: Rule) => {
-    if (editIndex !== null) store.updateRule(editIndex, rule);
-    else store.addRule(rule);
+    let newRules: Rule[];
+    if (editIndex !== null) {
+      newRules = store.rules.map((r, i) => i === editIndex ? rule : r);
+      store.updateRule(editIndex, rule);
+    } else {
+      newRules = [...store.rules, rule];
+      store.addRule(rule);
+    }
     setDialogOpen(false);
+    autoSave(newRules);
   };
 
   const handleDelete = (idx: number) => {
+    const newRules = store.rules.filter((_, i) => i !== idx);
     store.deleteRule(idx);
     setSelected(prev => {
       const next = new Set<number>();
@@ -323,30 +347,32 @@ export const CustomRulesPage = () => {
       }
       return next;
     });
+    autoSave(newRules);
   };
 
   const handleBulkDelete = () => {
     const sortedDesc = [...selected].sort((a, b) => b - a);
-    const rules = [...store.rules];
-    for (const idx of sortedDesc) rules.splice(idx, 1);
-    store.setRules(rules);
+    const newRules = [...store.rules];
+    for (const idx of sortedDesc) newRules.splice(idx, 1);
+    store.setRules(newRules);
     setSelected(new Set());
     anchorPosRef.current = null;
+    autoSave(newRules);
   };
 
   const handleBulkApply = (newTypecode: string, newCallsign: string) => {
-    store.setRules(
-      store.rules.map((r, i) => {
-        if (!selected.has(i)) return r;
-        return {
-          typecode: newTypecode || r.typecode,
-          callsign: newCallsign || r.callsign,
-          model: r.model,
-        };
-      })
-    );
+    const newRules = store.rules.map((r, i) => {
+      if (!selected.has(i)) return r;
+      return {
+        typecode: newTypecode || r.typecode,
+        callsign: newCallsign || r.callsign,
+        model: r.model,
+      };
+    });
+    store.setRules(newRules);
     setBulkEditOpen(false);
     setSelected(new Set());
+    autoSave(newRules);
   };
 
   const handleLoadVmr = async () => {
@@ -364,16 +390,20 @@ export const CustomRulesPage = () => {
           newRules.push({ typecode: r.typecode, callsign: r.callsign ?? '', model: m });
         }
       }
+      store.setFilePath(path);
       store.setRules(newRules);
+      store.setModels([]);
+      setSelected(new Set());
+      setSaveStatus('idle');
     } catch (e) {
       console.error('Failed to load VMR:', e);
     }
   };
 
-  const handleLoadModels = async () => {
+  const handleLoadModels = async (version: 'fs2020' | 'fs2024') => {
     store.setModelsLoading(true);
     try {
-      const models = await window.electronAPI.scanCommunity();
+      const models = await window.electronAPI.scanCommunity(version);
       store.setModels(models);
     } catch {
       store.setModelsLoading(false);
@@ -388,6 +418,15 @@ export const CustomRulesPage = () => {
 
   const editingRule = editIndex !== null ? store.rules[editIndex] : undefined;
 
+  const fileName = store.filePath
+    ? store.filePath.split(/[\\/]/).pop()
+    : null;
+
+  const saveLabel =
+    saveStatus === 'saving' ? 'Saving…' :
+    saveStatus === 'saved'  ? 'Saved' :
+    saveStatus === 'error'  ? 'Save failed' : '';
+
   return (
     <div className={styles.page}>
       {/* Header */}
@@ -397,36 +436,50 @@ export const CustomRulesPage = () => {
           <button
             className="btn btn-outline-info"
             onClick={handleLoadVmr}
-            title="Load a VMR file — replaces current rules"
+            title="Open a VMR file to edit"
           >
             <Upload size={13} />
             Load VMR…
           </button>
-          {store.rules.length > 0 && (
-            <button
-              className="btn btn-outline-danger"
-              onClick={() => { store.setRules([]); setSelected(new Set()); }}
-              title="Clear all rules"
-            >
-              <Trash2 size={13} />
-              Clear Rules
-            </button>
-          )}
           <button
             className="btn btn-outline-info"
-            onClick={handleLoadModels}
-            disabled={store.modelsLoading}
-            title="Scan Community folder for livery titles"
+            onClick={() => handleLoadModels('fs2020')}
+            disabled={store.modelsLoading || !store.filePath}
+            title="Scan FS2020 Community folder for available livery titles"
           >
             <Search size={13} />
-            {store.modelsLoading ? 'Scanning…' : store.modelsLoaded ? 'Reload Models' : 'Load Models'}
+            FS2020 Models
+          </button>
+          <button
+            className="btn btn-outline-info"
+            onClick={() => handleLoadModels('fs2024')}
+            disabled={store.modelsLoading || !store.filePath}
+            title="Scan FS2024 Community folder for available livery titles"
+          >
+            <Search size={13} />
+            FS2024 Models
           </button>
         </div>
       </div>
 
-      {store.modelsLoaded && (
-        <div className={styles.modelsStatus}>
-          {store.models.length.toLocaleString()} model names loaded from Community folder.
+      {/* File status bar */}
+      {store.filePath ? (
+        <div className={styles.fileBar}>
+          <span className={styles.fileName} title={store.filePath}>{fileName}</span>
+          {saveLabel && (
+            <span className={`${styles.saveStatus} ${styles[`saveStatus_${saveStatus}`]}`}>
+              {saveLabel}
+            </span>
+          )}
+          {store.modelsLoaded && (
+            <span className={styles.modelsCount}>
+              · {store.models.length.toLocaleString()} models loaded
+            </span>
+          )}
+        </div>
+      ) : (
+        <div className={styles.noFile}>
+          Load a VMR file to start editing.
         </div>
       )}
 
@@ -519,8 +572,10 @@ export const CustomRulesPage = () => {
             {visibleRules.length === 0 ? (
               <tr>
                 <td colSpan={5} className={styles.emptyCell}>
-                  {store.rules.length === 0
-                    ? 'No custom rules — click Add Rule to get started.'
+                  {!store.filePath
+                    ? 'Load a VMR file to begin editing.'
+                    : store.rules.length === 0
+                    ? 'No rules in this VMR — click Add Rule to get started.'
                     : 'No rules match the filter.'}
                 </td>
               </tr>
@@ -555,13 +610,14 @@ export const CustomRulesPage = () => {
                   <td className={`${styles.td} ${styles.modelCell}`}>{r.model}</td>
                   <td className={styles.td}>
                     <div className={styles.rowActions}>
-                      <button className={styles.iconBtn} onClick={() => openEdit(r._idx)} title="Edit">
+                      <button className={styles.iconBtn} onClick={() => openEdit(r._idx)} title="Edit" disabled={!store.filePath}>
                         <Edit2 size={13} />
                       </button>
                       <button
                         className={`${styles.iconBtn} ${styles.iconBtnDanger}`}
                         onClick={() => handleDelete(r._idx)}
                         title="Delete"
+                        disabled={!store.filePath}
                       >
                         <Trash2 size={13} />
                       </button>
@@ -602,7 +658,7 @@ export const CustomRulesPage = () => {
 
       {/* Action bar */}
       <div className={styles.actionBar}>
-        <button className="btn btn-outline-success" onClick={openAdd}>
+        <button className="btn btn-outline-success" onClick={openAdd} disabled={!store.filePath}>
           <Plus size={13} />
           Add Rule
         </button>

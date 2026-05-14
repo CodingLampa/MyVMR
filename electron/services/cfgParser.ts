@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as os from 'os';
 
 export interface Livery {
   title: string;
@@ -116,13 +115,7 @@ export function parseAircraftCfg(filepath: string, opts: ParseOpts = {}): Livery
   return liveries;
 }
 
-function getMsfsComputedPath(): string {
-  const local = process.env.LOCALAPPDATA ?? os.homedir();
-  return path.join(local, 'Packages', 'Microsoft.Limitless_8wekyb3d8bbwe', 'LocalCache', 'Packages', 'Community');
-}
-
-export async function scanCommunityTitles(): Promise<string[]> {
-  const communityPath = getMsfsComputedPath();
+export async function scanCommunityTitles(communityPath: string): Promise<string[]> {
   if (!fs.existsSync(communityPath)) return [];
 
   const models = new Set<string>();

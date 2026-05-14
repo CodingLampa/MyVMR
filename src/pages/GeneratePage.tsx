@@ -67,7 +67,7 @@ const FolderRow = ({
 
 export const GeneratePage = () => {
   const store = useGenerateStore();
-  const logRef = useRef<HTMLDivElement>(null);
+const logRef = useRef<HTMLDivElement>(null);
   const unsubRef = useRef<(() => void) | null>(null);
   const [showLog, setShowLog] = useState(false);
 
@@ -239,8 +239,8 @@ export const GeneratePage = () => {
             <span className={store.skipFsltl ? styles.checkLabelActive : styles.checkLabel}></span>
           </button>
           <div className={styles.vmrMessage}>
-              <span style={{ fontWeight: "bold" }}>Skip FSLTL VMR Merge. </span><br />
-              May cause unmatched traffic to default to Asobo models, instead of FSLTL generic models.
+            <span style={{ fontWeight: "bold" }}>Skip FSLTL VMR Merge. </span><br />
+            Skipping may cause unmatched traffic to default to Asobo models, instead of FSLTL generic models.
           </div>
         </div>
 
@@ -363,7 +363,7 @@ export const GeneratePage = () => {
       {/* Credits footer */}
       <div className={styles.footer}>
         <span>Created by <strong>Laurie Cooper</strong></span>
-        <span>Credit to <strong>BAVirtual Livery Manager</strong> by Pavel Sergienko</span>
+        <span>Credit to <strong>BAVirtual Livery Manager</strong> by <strong>Pavel Sergienko</strong></span>
       </div>
     </div>
   );

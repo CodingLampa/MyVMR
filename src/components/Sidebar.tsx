@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FileText, List, ChevronsLeft, ChevronsRight } from 'react-feather';
+import { FileText, List, HelpCircle, ChevronsLeft, ChevronsRight } from 'react-feather';
 import styles from './Sidebar.module.css';
 import logo from '../assets/logo.png';
 
 const NAV = [
-  { to: '/generate',     icon: FileText, label: 'Generate VMR' },
-  { to: '/custom-rules', icon: List,     label: 'Custom Rules' },
+  { to: '/generate',     icon: FileText,   label: 'Generate VMR' },
+  { to: '/custom-rules', icon: List,       label: 'Custom Rules' },
+  { to: '/help',         icon: HelpCircle, label: 'Help'         },
 ];
 
 export const Sidebar = () => {
